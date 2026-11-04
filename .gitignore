@@ -1,51 +1,60 @@
+# =================================================================
+# Existing Project Data Exclusions
+# =================================================================
+.DS_Store
+# =================================================================
+# General Cache and Temporary Files
+# =================================================================
 old/
-__pycache__
-
+__pycache__/
 temp/
+# This machine's tool locations (copy site.example.json)
+/site.json
+frontend/qonnx/vendor/
+frontend/qonnx/out/
 
-run/fpga/*
-run/work*
-
-run/asic/*
-!deepsocflow/asic/reports
-
+# =================================================================
+# DeepSoCFlow / CGRA4ML Specific Files
+# =================================================================
 *.pickle
+*.jou
+*.log
 *.h5
 *.keras
-deepsocflow/test/vectors
-deepsocflow/test/xsim
-deepsocflow/test/dnn_engine_tb.vcd
-deepsocflow/test/xsc*
-deepsocflow/test/obj_dir
-deepsocflow/test/models
-deepsocflow/test/temp
+CGRA4ML/deepsocflow/test/vectors/
+CGRA4ML/deepsocflow/test/xsim/
+CGRA4ML/deepsocflow/test/dnn_engine_tb.vcd
+CGRA4ML/deepsocflow/test/xsc*
+CGRA4ML/deepsocflow/test/obj_dir/
+CGRA4ML/deepsocflow/test/models/
+CGRA4ML/deepsocflow/test/temp/
+CGRA4ML/deepsocflow/test/py/*
+bsp_demo.dump
+# =================================================================
+# Run/Work Directory Rules
+#
+# Ignore generated run/work contents recursively.
+# =================================================================
+CGRA4ML/run/work/**
 
-deepsocflow/test/py/*
+# Ignore other specific run directories by name
+CGRA4ML/run/work_resnet/
+CGRA4ML/run/work_temp/
+CGRA4ML/run/work_ccd/
+CGRA4ML/run/work_dddd/
+CGRA4ML/run/work_llm/
+CGRA4ML/run/work_example/
+CGRA4ML/run/work_resnet18/
+CGRA4ML/run/work_pointnet/
 
-.svls.toml
-.svlint.toml
+# Ignore ASIC simulation output, but keep reports
+CGRA4ML/run/asic/*
+!CGRA4ML/run/asic/reports/
+!CGRA4ML/run/asic/reports/**
 
-**/vectors/*
-run/work/build/*
-run/work/dsf*
-run/work_resnet
-run/work_temp
-run/work_ccd
-run/work_dddd
-run/work_llm
-run/work_example
-run/work_resnet18
-run/work_pointnet
-run/work/project_1
-
-# Vivado and verilator sim
-run/work/.Xil*
-run/work/xsim/
-run/work/xsim/*
-run/work/verilator-sim/
-run/work/verilator-sim/*
-
-# Distribution / packaging
+# =================================================================
+# Build and Distribution Artifacts
+# =================================================================
 .Python
 build/
 develop-eggs/
@@ -66,18 +75,25 @@ share/python-wheels/
 MANIFEST
 
 # PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
 
-# Sphinx documentation
-docs/**
-!docs/source
-docs/source/**
-!docs/source/conf.py
-!docs/source/*.rst
+# =================================================================
+# Documentation
+#
+# Ignore all docs except the source ReStructuredText files and config
+# =================================================================
+CGRA4ML/docs/**
+!CGRA4ML/docs/source/
+!CGRA4ML/docs/source/**
+!CGRA4ML/docs/source/conf.py
+!CGRA4ML/docs/source/*.rst
 
-# VSCode
-settings.json
-.vscode
+# =================================================================
+# IDE and Tooling Config
+# =================================================================
+.svls.toml
+.svlint.toml
+.vscode/
+.codex
+.codex/

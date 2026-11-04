@@ -1,0 +1,22 @@
+{
+  "export": "export",
+  "bundles": 7,
+  "print": "logits",
+  "requests": [
+    {"input": "inputs/C.bin", "expect": "references/C-logits.txt",
+     "golden": "references/C-softmax.txt"},
+    {"input": "inputs/D.bin", "expect": "references/D-logits.txt",
+     "golden": "references/D-softmax.txt"},
+    {"input": "inputs/C.bin", "expect": "references/C-logits.txt",
+     "golden": "references/C-softmax.txt"}
+  ],
+  "sim": {"cycle_limit": 20000000},
+  "board": {
+    "bitstream": {
+      "path": "../../../build/bitstreams/regression4/qualified-bitstream/bitstream.nxb",
+      "sha256": "94d84780942e086517bc14c64d7da7de680cac8ba0a1e1482fcc6b8de8fcbf54",
+      "flash_app_offset": 7340032
+    },
+    "timeout_s": 300
+  }
+}

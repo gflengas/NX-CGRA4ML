@@ -1,0 +1,10 @@
+{
+  "model_sha256": "f9165754d506a23cf007fe327effa2f9aad735455aef99b7137e6338d071dd57",
+  "parsed_nodes": 77,
+  "input_shape": [
+    1,
+    28,
+    28,
+    1
+  ]
+}

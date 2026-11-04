@@ -1,0 +1,46 @@
+# BSP application build of the CGRA4ML NG-ULTRA inference runtime.
+APP_NAME := cgra4ml_ngultra_inference
+NGULTRA_COMMON := y
+NGULTRA_INIT := y
+NGULTRA_DMA := y
+NGULTRA_LLPP := y
+NGULTRA_SYSTEM_COUNTER := y
+ARM_GICV3 := y
+
+TARGET_MEM := TARGET_MEM_DDR
+# MODE=release|profile|debug (runtime/cg_config.h); CG_LOG_LEVEL=1..3 refines
+# the debug log. Golden validation is chosen when the model is generated.
+MODE ?= release
+CG_MODE_ID := $(if $(filter release,$(MODE)),0,$(if $(filter profile,$(MODE)),1,$(if $(filter debug,$(MODE)),2,$(error MODE must be release, profile or debug))))
+CFLAGS += -DCG_MODE=$(CG_MODE_ID)
+ifneq ($(origin CG_LOG_LEVEL),undefined)
+CFLAGS += -DCG_LOG_LEVEL=$(CG_LOG_LEVEL)
+endif
+# Power measurement windows (release builds; runtime/cg_config.h).
+ifneq ($(origin CG_PRINT_RESULT),undefined)
+CFLAGS += -DCG_PRINT_RESULT=$(CG_PRINT_RESULT)
+endif
+ifneq ($(origin CG_POWER_MS),undefined)
+CFLAGS += -DCG_POWER_MS=$(CG_POWER_MS) -DCG_POWER_IDLE_MS=$(CG_POWER_IDLE_MS)
+CFLAGS += -DCG_POWER_WARMUP_MS=$(CG_POWER_WARMUP_MS) -DCG_POWER_CYCLES=$(CG_POWER_CYCLES)
+endif
+
+include ../../build/common/Makefile.common
+# Advanced SIMD: NEON instructions with the soft-float
+# calling convention, so the BSP's libraries stay compatible; main enables
+# the unit (nx_simd_enable). After the BSP's -mfloat-abi=soft, and for the
+# link too: -flto generates the code there.
+arm_COMMON_FLAGS += -mfpu=neon-fp-armv8 -mfloat-abi=softfp
+# The runtime declares variables where they are first used.
+arm_COMMON_FLAGS += -Wno-declaration-after-statement
+LDFLAGS += -mfpu=neon-fp-armv8 -mfloat-abi=softfp
+
+CXX := arm-none-eabi-g++
+# The runtime (one translation unit, main.c with the runtime headers) and the
+# generated model tables, copied flat into the BSP app directory by
+# `python3 -m cgtools board build-app`.
+SRCFILES += main.c model.c
+LDFLAGS += -Wl,--build-id=none
+LIB_DEPS_LD += -lm
+
+include ../../build/common/Makefile.build

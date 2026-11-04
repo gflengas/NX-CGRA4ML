@@ -1,0 +1,23 @@
+# The project's Python environment: exporters (TensorFlow/QKeras), the QONNX
+# import, cgtools, the unit tests and Verilator for simulation.
+#   conda env create -f environment.yml
+# QKeras needs pyparsing without declaring it; tensorflow-model-optimization
+# 0.8 pulls in tf-keras, which breaks the export: both are pinned here.
+name: nxcgra4ml
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - verilator=5.022
+  - pip
+  - pip:
+      - tensorflow==2.15.0
+      - keras==2.15.0
+      - qkeras==0.9.0
+      - tensorflow-model-optimization==0.7.5
+      - pyparsing==3.0.9
+      - numpy==1.26.4
+      - qonnx==0.4.0
+      - onnx==1.17.0
+      - onnxruntime==1.20.1
+      - pytest

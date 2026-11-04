@@ -1,0 +1,158 @@
+{
+  "b0.input": {
+    "elements": 784,
+    "max_error": 0.0
+  },
+  "b0.biased": {
+    "elements": 3136,
+    "max_error": 0.0
+  },
+  "b0.activated": {
+    "elements": 3136,
+    "max_error": 0.0
+  },
+  "b0.output": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b0.pooled": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b0.raw": {
+    "elements": 3136,
+    "max_error": 0.0
+  },
+  "b1.input": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b1.biased": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b1.activated": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b1.output": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b1.added": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b1.raw": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b2.input": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b2.biased": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b2.activated": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b2.output": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b2.added": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b2.raw": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b3.input": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b3.biased": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b3.activated": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b3.output": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b3.added": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b3.raw": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b4.input": {
+    "elements": 432,
+    "max_error": 0.0
+  },
+  "b4.biased": {
+    "elements": 1296,
+    "max_error": 0.0
+  },
+  "b4.activated": {
+    "elements": 1296,
+    "max_error": 0.0
+  },
+  "b4.output": {
+    "elements": 1296,
+    "max_error": 0.0
+  },
+  "b4.raw": {
+    "elements": 1296,
+    "max_error": 0.0
+  },
+  "b5.input": {
+    "elements": 1296,
+    "max_error": 0.0
+  },
+  "b5.biased": {
+    "elements": 540,
+    "max_error": 0.0
+  },
+  "b5.activated": {
+    "elements": 540,
+    "max_error": 0.0
+  },
+  "b5.output": {
+    "elements": 540,
+    "max_error": 0.0
+  },
+  "b5.raw": {
+    "elements": 540,
+    "max_error": 0.0
+  },
+  "b6.input": {
+    "elements": 540,
+    "max_error": 0.0
+  },
+  "b6.biased": {
+    "elements": 10,
+    "max_error": 0.0
+  },
+  "b6.activated": {
+    "elements": 10,
+    "max_error": 0.0
+  },
+  "b6.output": {
+    "elements": 10,
+    "max_error": 0.0
+  },
+  "b6.raw": {
+    "elements": 10,
+    "max_error": 0.0
+  }
+}
