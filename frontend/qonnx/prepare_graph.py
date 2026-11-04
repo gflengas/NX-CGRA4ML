@@ -33,6 +33,7 @@ def main():
         tensor = value.type.tensor_type  # Scalars have a shape with no dimensions.
         assert tensor.HasField('shape') and all(d.dim_value > 0 for d in tensor.shape.dim), \
             f'{value.name}: no static shape'
+    args.output.parent.mkdir(parents=True, exist_ok=True)
     model.save(str(args.output))
     print(f'Prepared {len(graph.node)} nodes; input {graph.input[0].name}')
 

@@ -47,14 +47,14 @@ class QonnxToolTests(unittest.TestCase):
         self.directory.cleanup()
 
     def test_prepare_binds_inputs_folds_constants_and_infers_shapes(self):
-        run('prepare_graph.py', self.root / 'model.onnx', self.root / 'prepared.onnx')
-        graph = onnx.load(self.root / 'prepared.onnx').graph
+        run('prepare_graph.py', self.root / 'model.onnx', self.root / 'new/prepared.onnx')
+        graph = onnx.load(self.root / 'new/prepared.onnx').graph
         self.assertEqual([i.name for i in graph.input], ['x'])
         self.assertEqual([n.op_type for n in graph.node], ['Conv', 'Reshape'])
         self.assertEqual([d.dim_value for d in graph.output[0].type.tensor_type.shape.dim],
                          [1, 3, 3, 4])
         with self.assertRaises(subprocess.CalledProcessError):
-            run('prepare_graph.py', self.root / 'model.onnx', self.root / 'prepared.onnx')
+            run('prepare_graph.py', self.root / 'model.onnx', self.root / 'new/prepared.onnx')
 
     def test_references_hold_context_and_nhwc_codes(self):
         run('prepare_graph.py', self.root / 'model.onnx', self.root / 'prepared.onnx')
