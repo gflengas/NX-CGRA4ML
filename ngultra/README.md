@@ -160,7 +160,7 @@ One switch, `--mode` (Makefile `MODE`, C `CG_MODE`):
 | `profile` | release plus `profile: stage=<name> ticks= ms=` per stage | where the time goes |
 | `debug` | `log: <event> a=0x.. b=0x..`; register snapshot on a timeout | diagnosis |
 
-Profile stages: `init_memset`, `zero_buffers`, `control`, `wait_packet`,
+Profile stages: `zero_buffers`, `control`, `wait_packet`,
 `accumulate`, `fused`, `postprocess`, `pool_copy`, `finish_other`, `pack`,
 `pack_concat`, `clean_intermediate`, and their `sum`. The timers add ~25-45 ms
 on large models, so compare profile runs with each other, not with release.

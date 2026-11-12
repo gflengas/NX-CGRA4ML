@@ -511,9 +511,19 @@ static int cg_fused_begin(size_t bundle_index) {
         fused.base[c] = pass_offset + (size_t)channel * rows;
         fused.stride[c] = (size_t)xcm * rows;
     }
+    /* Every destination channel is written, by this pass or the skip's pack:
+     * only the padding needs the clear. */
+    uint32_t written = bundle->co;
+    if (kind == CG_FUSED_DECODER) {
+        written += model_bundles[plan->skip_bundle].co;
+    }
     for (uint32_t image = 0; image < bundle->n; ++image) {
         cg_batch_image = image;
-        cg_pack_clear(cg_intermediate(bundle_index + 1), destination);
+        if (written == destination->ci) {
+            cg_pack_clear_padding(cg_intermediate(bundle_index + 1), destination);
+        } else {
+            cg_pack_clear(cg_intermediate(bundle_index + 1), destination);
+        }
     }
     profile_stop(PROFILE_FUSED);
     return 1;

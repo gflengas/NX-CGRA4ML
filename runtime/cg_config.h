@@ -98,7 +98,6 @@ static void cg_log(int level, const char *name, uint32_t a, uint32_t b) {
 /* Per-stage counter totals of one inference (profile builds). Stages do not
  * nest; the totals include the counter reads. */
 enum {
-    PROFILE_INIT,
     PROFILE_ZERO,
     PROFILE_CONTROL,
     PROFILE_WAIT,
@@ -112,7 +111,7 @@ enum {
     PROFILE_CLEAN,
     PROFILE_COUNT
 };
-static const char *profile_names[PROFILE_COUNT] = { "init_memset", "zero_buffers", "control",
+static const char *profile_names[PROFILE_COUNT] = { "zero_buffers", "control",
     "wait_packet", "accumulate", "fused", "postprocess", "pool_copy", "finish_other", "pack",
     "pack_concat", "clean_intermediate" };
 static uint64_t profile_ticks[PROFILE_COUNT];

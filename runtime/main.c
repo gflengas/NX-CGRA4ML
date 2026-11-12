@@ -203,10 +203,9 @@ static uint64_t run_inference(uint32_t iteration) {
     if (CG_PROFILE) {
         memset(profile_ticks, 0, sizeof(profile_ticks));
     }
-    profile_start();
-    memset(cg_workspace, 0, offsetof(cg_workspace_t, result));
-    profile_stop(PROFILE_INIT);
-    /* The host wrote the weights and input; the CPU never writes them. */
+    /* The workspace is not cleared: every buffer is written before it is
+     * read. The host wrote the weights and input; the CPU never writes
+     * them. */
     profile_start();
     nx_dma_to_device(cg_payload, MODEL_PAYLOAD_BYTES);
     profile_stop(PROFILE_CLEAN);
@@ -404,7 +403,10 @@ static uint64_t run_inference(uint32_t iteration) {
         }
         if (!last) {
             profile_start();
-            nx_dma_to_device(cg_intermediate_batch(b + 1), sizeof(cg_workspace->intermediate[0]));
+            /* Only the next bundle's input: the CPU wrote nothing else. */
+            const model_bundle_t *next = &model_bundles[b + 1];
+            nx_dma_to_device(cg_intermediate_batch(b + 1),
+                (next->x_bytes_first_pass + (size_t)(next->p - 1) * next->x_bytes) * next->n);
             profile_stop(PROFILE_CLEAN);
             /* The pixels FSM clears bundle_done when it starts the bundle. */
             profile_start();

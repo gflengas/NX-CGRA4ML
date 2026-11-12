@@ -27,8 +27,8 @@ brackets. Times are accepted input to computed output, ARM Cortex-R52 at
 
 | Model | Preset | Accelerator | Time (batch 8, per image) |
 | --- | --- | --- | --- |
-| ResNet 13k (MNIST, 4-bit; `ngultra/example/resnet/`) | `regression4` | 40 MHz | **2.347 ms** (2.211 ms) |
-| U-Net (small, 4-bit; `CGRA4ML/run/example_unet_small.py`) | `regression4` | 40 MHz | **0.965 ms** (0.842 ms) |
+| ResNet 13k (MNIST, 4-bit; `ngultra/example/resnet/`) | `regression4` | 40 MHz | **2.216 ms** (2.125 ms) |
+| U-Net (small, 4-bit; `CGRA4ML/run/example_unet_small.py`) | `regression4` | 40 MHz | **0.928 ms** (0.840 ms) |
 
 ## How a model gets to the board
 

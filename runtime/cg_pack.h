@@ -59,6 +59,25 @@ static void cg_pack_clear(uint8_t *buffer, const model_bundle_t *destination) {
         destination->x_bytes_first_pass + (size_t)(destination->p - 1) * destination->x_bytes);
 }
 
+/* Clears what a pack of every channel leaves unwritten: the tiles with rows
+ * past the image (the last tile's bottom padding). A destination with several
+ * passes or a size other than l * w * ci * rows values is cleared whole. */
+static void cg_pack_clear_padding(uint8_t *buffer, const model_bundle_t *destination) {
+    uint32_t rows = MODEL_PE_ROWS + destination->x_pad;
+    size_t tile_bits = (size_t)destination->w * destination->ci * rows * MODEL_X_BITS;
+    if (destination->p != 1
+        || (size_t)destination->x_bytes_first_pass * 8 != tile_bits * destination->l) {
+        cg_pack_clear(buffer, destination);
+        return;
+    }
+    for (uint32_t l = 0; l < destination->l; ++l) {
+        if (l * MODEL_PE_ROWS + rows > destination->h) {
+            size_t first = l * tile_bits / 8;
+            memset(&buffer[first], 0, ((l + 1) * tile_bits + 7) / 8 - first);
+        }
+    }
+}
+
 /* Channel locations of one block, so the packing loop has no division. */
 enum { CG_PACK_TABLE_CHANNELS = 1024 };
 static uint32_t pack_channel_offset[CG_PACK_TABLE_CHANNELS];
@@ -115,11 +134,12 @@ static void pack_source(uint8_t *buffer, const model_bundle_t *source,
             pack_channel_offset[c] = pass_offset;
         }
         for (uint32_t l = 0; l < destination->l; ++l) {
-            /* Source row of each tile row, once per row block. */
+            /* Source offset of each tile row, once per row block. */
             uint32_t valid_rows = destination->h - l * MODEL_PE_ROWS;
             valid_rows = valid_rows < rows ? valid_rows : rows;
             for (uint32_t r = 0; r < valid_rows; ++r) {
-                source_row[r] = (size_t)((l * MODEL_PE_ROWS + r) / source->upsample_h) * source->pw;
+                source_row[r] = (size_t)((l * MODEL_PE_ROWS + r) / source->upsample_h) * source->pw
+                    * source->co;
             }
             for (uint32_t w = 0; w < destination->w; ++w) {
                 size_t column = w / source->upsample_w;
@@ -132,19 +152,19 @@ static void pack_source(uint8_t *buffer, const model_bundle_t *source,
                     /* The source's layout decides the loop, not each value. */
                     if (value_bytes == 4) {
                         for (uint32_t r = 0; r < valid_rows; ++r) {
-                            int32_t value = words[source_row[r] * source->co + first];
+                            int32_t value = words[source_row[r] + first];
                             value = quant != NULL ? cg_transition_apply(value, &join) : value;
                             cg_pack_store(buffer, flat + r, value);
                         }
                     } else if (identity) {
                         for (uint32_t r = 0; r < valid_rows; ++r) {
                             cg_pack_store(
-                                buffer, flat + r, bytes[source_row[r] * source->co + first]);
+                                buffer, flat + r, bytes[source_row[r] + first]);
                         }
                     } else {
                         for (uint32_t r = 0; r < valid_rows; ++r) {
                             cg_pack_store(buffer, flat + r,
-                                code_table[bytes[source_row[r] * source->co + first] + 128]);
+                                code_table[bytes[source_row[r] + first] + 128]);
                         }
                     }
                 }
